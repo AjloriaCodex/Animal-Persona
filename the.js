@@ -258,15 +258,42 @@ function start() {
   button.id = "startButton";
 
   screenDiv.appendChild(button);
-  button.style.marginTop = "14em";
+  button.style.marginTop = "0.5";
   button.style.padding = "1em 5em";
   button.style.fontSize = "25px";
-  button.style.marginLeft = "-1.1em";
-  
+  // modal fun facts
+  const tips = ["A fun fact about finding your true self is that the answers are already within you- you just need to listen! Your subconscious mind constantly picks up on what truly resonates with you, but daily distractions and societal expectations can drown it out. Practices like mindfulness, journaling, and spending time alone help you tune in to your inner voice, making it easier to recognize your true desires, values, and purpose.", "Your brain keeps working even when you’re resting! – The default mode network (DMN) activates when you're daydreaming, reflecting, or resting. This helps with creativity, problem-solving, and self-discovery. So, taking breaks actually boosts productivity!", "A fun fact about finding your true self is that your gut feelings are often more accurate than overthinking! Studies in neuroscience show that intuition is your brain rapidly processing past experiences and subconscious knowledge. When you're trying to discover your true self, trusting your instincts - rather than endlessly analyzing - can lead to more authentic decisions that align with who you really are.", "Learning new things keeps your brain young. – Every time you learn a new skill, your brain forms new connections (neuroplasticity), keeping it sharp and resilient against aging.", "You can train your brain to be more positive. – Negative thoughts create stronger neural pathways when repeated, but actively practicing optimism can rewire your brain to see the brighter side of life.", "Smiling can trick your brain into feeling happy. -Even a fake smile activates the brain's reward system, releasing feel-good chemicals like dopamine and endorphins. So, 'fake it till you make it' actually works!","Gratitude rewires your brain for happiness. - Expressing gratitude activates the dopamine and serotonin pathways, making you feel more positive and resilient. Even writing down three things you're grateful for daily can make a big difference!"];
+  const modal = document.getElementById("myModal");
+  const tipText = document.getElementById("tipText");
+  const btn = document.getElementById("openModal");
+  const closeBtn = document.querySelector(".close");
+
+  btn.onclick = function () {
+      tipText.textContent = tips[Math.floor(Math.random() * tips.length)];
+      modal.style.display = "flex";
+      setTimeout(() => modal.classList.add("show"), 10);
+  };
+
+  closeBtn.onclick = function () {
+      modal.classList.remove("show");
+      setTimeout(() => modal.style.display = "none", 500);
+  };
+
+  window.onclick = function (event) {
+      if (event.target === modal) {
+          modal.classList.remove("show");
+          setTimeout(() => modal.style.display = "none", 500);
+      }
+  };
 
   // Add event listener to start the quiz
   button.addEventListener("click", function () {
       button.style.display = "none"; // Hide the button
+      document.querySelector(".carousel-container").style.display = "none";
+      document.querySelector("h1").style.display = "none";
+      document.querySelectorAll(".info1").forEach(el => {
+         el.style.display = "none";
+     });
       displayQuestion(); // Start the quiz
   });
 }
@@ -313,14 +340,14 @@ function displayQuestion() {
           imgElement.alt = resultText;
           imgElement.style.width = "380px";
           imgElement.style.height = "472px";
-          imgElement.style.marginLeft = "-4em";
+          imgElement.style.marginLeft = "-1em";
           imgElement.style.marginTop = "-1.75em";
           document.querySelector(".screen").style.backgroundColor = "transparent";
           choicesContainer.appendChild(imgElement);
        const DLbutton = document.createElement("button");
           DLbutton.id = "Dlpersonality";
           DLbutton.textContent = "Download Image";
-          document.body.appendChild(DLbutton);
+          document.querySelector(".f").appendChild(DLbutton);
 
             DLbutton.addEventListener("click", async function() {
         const imageUrl = resultImage; // Ensure this is a direct image URL (e.g., "https://example.com/image.png")
@@ -343,12 +370,25 @@ function displayQuestion() {
         }
        
       });
-      const linkbutton = document.createElement("button");
-       linkbutton.id = "linkbutton";
-       linkbutton.textContent = "linkbutton";
-       document.body.appendChild(linkbutton);
+      document.querySelector(".screen").style.backgroundImage = "none";
+      document.querySelector(".screen").style.borderColor = "none";
+      document.querySelector(".screen").style.borderStyle = "none";
+      document.querySelector(".screen").style.outlineColor = "none";
+      document.querySelector(".screen").style.outlineStyle = "none";
+      document.querySelector(".screen").style.backgroundColor = "none";
+      
     }
-  
+// caraousel  
 }
+const images = document.querySelectorAll(".carousel img");
+let currentIndex = 0;
+
+function showNextImage() {
+    images[currentIndex].classList.remove("active");
+    currentIndex = (currentIndex + 1) % images.length;
+    images[currentIndex].classList.add("active");
+}
+
+setInterval(showNextImage, 3000);
 
 document.addEventListener("DOMContentLoaded", start);
